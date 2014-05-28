@@ -11,6 +11,9 @@ How to Run
 Download Script to Raspberry Pi
 
 cd ~
+
 wget https://raw.githubusercontent.com/binkybear/HoneyPi/master/honeypotpi.sh
+
 sudo chmod +x honeypotpi.sh
+
 ./honeypotpi.sh
