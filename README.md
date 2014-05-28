@@ -7,12 +7,11 @@ This has only been slightly tested and can be used as a guide for installing som
 
 How to Run
 ======
-
-Download Script to Raspberry Pi
+You can either run git clone this repository or use wget:
 
 cd ~
 
-wget https://raw.githubusercontent.com/binkybear/HoneyPi/master/honeypotpi.sh
+wget https://raw.githubusercontent.com/binkybear/HoneyPi/master/honeypotpi.sh --no-check-certificate
 
 sudo chmod +x honeypotpi.sh
 
