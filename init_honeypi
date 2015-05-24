@@ -38,16 +38,16 @@ honey_start(){
 
 	dionaea -l all,debug -r /opt/dionaea -w /opt/dionaea -p /opt/dionaea/var/dionaea.pid
 	python /opt/ragpicker/ragpicker.py -t 5 --log-filename=$logfolder/ragpicker.log
-	cd /opt/honssh;./honsshctrl START
+	/opt/honssh/honsshctrl START
 	cd /opt/kippo-read-only;./start.sh
 	}
 
 honey_stop(){
-		sts_glastopf=`ps aux |grep glastopf >> /dev/null;echo $?`
-		sts_dionaea=`ps aux | grep dionaea >> /dev/null;echo $?`
-		sts_ragpicker=`ps aux| grep ragpicker >> /dev/null;echo $?`
-		sts_honssh=`ps aux |grep honssh >> /dev/null; echo $?`
-		sts_kippo=`ps aux|grep kippo >>/dev/null ;echo $?`
+		sts_glastopf=`ps aux |grep -v grep |grep glastopf >> /dev/null;echo $?`
+		sts_dionaea=`ps aux |grep -v grep| grep dionaea >> /dev/null;echo $?`
+		sts_ragpicker=`ps aux|grep -v grep| grep ragpicker >> /dev/null;echo $?`
+		sts_honssh=`ps aux |grep -v grep|grep honssh >> /dev/null; echo $?`
+		sts_kippo=`ps aux|grep -v grep|grep kippo >>/dev/null ;echo $?`
 		
 		if [ "$sts_glastopf" == '0' ];then
 			killall glastopf 
@@ -75,11 +75,11 @@ honey_restart(){
 	}
 
 honey_status(){
-		sts_glastopf=`ps aux |grep glastopf >> /dev/null;echo $?`
-		sts_dionaea=`ps aux | grep dionaea >> /dev/null;echo $?`
-		sts_ragpicker=`ps aux| grep ragpicker >> /dev/null;echo $?`
-		sts_honssh=`ps aux |grep honssh >> /dev/null; echo $?`
-		sts_kippo=`ps aux|grep kippo >>/dev/null ;echo $?`
+		sts_glastopf=`ps aux |grep -v grep|grep glastopf >> /dev/null;echo $?`
+		sts_dionaea=`ps aux |grep -v grep| grep dionaea >> /dev/null;echo $?`
+		sts_ragpicker=`ps aux|grep -v grep| grep ragpicker >> /dev/null;echo $?`
+		sts_honssh=`ps aux |grep -v grep|grep honssh >> /dev/null; echo $?`
+		sts_kippo=`ps aux|grep -v grep|grep kippo >>/dev/null ;echo $?`
 		
 		if [ "$sts_glastopf" == '0' ];then
 			echo " glastopf is running "
