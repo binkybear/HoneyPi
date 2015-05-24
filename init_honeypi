@@ -82,33 +82,33 @@ honey_status(){
 		sts_honssh=`ps aux |grep -v grep|grep honssh >> /dev/null; echo $?`
 		sts_kippo=`ps aux|grep -v grep|grep kippo >>/dev/null ;echo $?`
 		
-		if [ "$sts_glastopf" == '0' ];then
+		if [[ "$sts_glastopf" == "0" ]];then
 			echo " glastopf is running "
 		else 
 			echo "glastopf is Down"
 		fi
-		if [ "$sts_dionaea" == '0' ];then
+		if [[ "$sts_dionaea" == "0" ]];then
 			echo "dionaea is running "
 		else 
 			echo ""
 		fi
-		if [ "$sts_ragpicker" == '0' ];then
+		if [[ "$sts_ragpicker" == "0" ]];then
 			echo " ragpicker is running"
 		else 
 			echo " ragpicker is Down"
 		fi
-		if [ "$sts_honssh" == '0' ];then
+		if [[ "$sts_honssh" == "0" ]];then
 			echo " honssh is running"
 		else
 			echo "honssh is Down"
 		fi
-		if [ "$sts_kippo" == '0' ];then
+		if [[ "$sts_kippo" == "0" ]];then
 			echo " kippo is running"
 		else 
 			echo "kippo is Down"
 		fi
-	
 	}
+	
 ###
 #Main- _ - _ - _ - _ - _ - _ -_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
@@ -118,5 +118,5 @@ honey_status(){
 		stop	) echo " stopping the honeyPI";honey_stop   ;;
 		status	) honey_status ;;
 		restart	) honey_stop;honey_start;;
-		*		) " Usage: init_honeyPi [start|stop|status]" ;;
+		*	) " Error $1 unknown options --> Usage: init_honeyPi [start|stop|status]" ;;
 	esac
