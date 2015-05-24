@@ -34,13 +34,16 @@ honey_start(){
 				dionaea -l all,debug -r /opt/dionaea -w /opt/dionaea -p /opt/dionaea/var/dionaea.pid
 				python /opt/ragpicker/ragpicker.py -t 5 --log-filename=$logfolder/ragpicker.log
 				/opt/honssh/honsshctrl START >> $logfolder/honssh.log
-				/opt/kippo-read-only/start.sh >> $logfolder/kippo.log
+				if [[ -x /opt/kippo-read-only/start.sh ]];then
+					/opt/kippo-read-only/start.sh >> $logfolder/kippo.log
+				else 
+					chmod +x /opt/kippo-read-only/start.sh
+					/opt/kippo-read-only/start.sh  >> $logfolder/kippo.log
+				fi
 			else
 				echo "apache dependencies - please start apache: systemctl start apache2.service"
 				exit 1
 			fi
-
-	
 	}
 
 honey_stop(){
@@ -50,19 +53,19 @@ honey_stop(){
 		sts_honssh=`ps aux |grep -v grep|grep honssh >> /dev/null; echo $?`
 		sts_kippo=`ps aux|grep -v grep|grep kippo >>/dev/null ;echo $?`
 		
-		if [ "$sts_glastopf" == '0' ];then
+		if [ "$sts_glastopf" == "0" ];then
 			killall glastopf 
 		fi
-		if [ "$sts_dionaea" == '0' ];then
+		if [ "$sts_dionaea" == "0" ];then
 			killall dionaea
 		fi
-		if [ "$sts_ragpicker" == '0' ];then
+		if [ "$sts_ragpicker" == "0" ];then
 			killall  ragpicker
 		fi
-		if [ "$sts_honssh" == '0' ];then
+		if [ "$sts_honssh" == "0" ];then
 			killall honssh
 		fi
-		if [ "$sts_kippo" == '0' ];then
+		if [ "$sts_kippo" == "0" ];then
 			killall kippo
 		fi
 	
@@ -118,5 +121,5 @@ honey_status(){
 		stop	) echo " stopping the honeyPI";honey_stop   ;;
 		status	) honey_status ;;
 		restart	) honey_stop;honey_start;;
-		*	) " Error $1 unknown options --> Usage: init_honeyPi [start|stop|status]" ;;
+		*) " Error $1 unknown options --> Usage: init_honeyPi [start|stop|status]" ;;
 	esac
