@@ -5,6 +5,11 @@
 # meant to be more stealthy & efficient.
 ########################################################################
 
+###Vars
+
+
+###Funcs
+
 # =======================
 # = UPDATE =
 # =======================
@@ -48,12 +53,18 @@ f_install_dionaea(){
 echo "deb http://packages.s7t.de/raspbian wheezy main" | tee -a /etc/apt/sources.list
 	echo "updating package cache"
  apt-get update >> /dev/null
-		apt-get install -y libglib2.0-dev libssl-dev libcurl4-openssl-dev libreadline-dev
-		apt-get install -y autoconf build-essential subversion git-core flex bison libsqlite3-dev
-		apt-get install -y pkg-config libnl-3-dev libnl-genl-3-dev libnl-nf-3-dev libtool
-		apt-get install --force-yes -y libnl-route-3-dev liblcfg libemu libev dionaea-python automake
-		apt-get install --force-yes -y dionaea-cython libpcap udns dionaea sqlite3
-		apt-get install --force-yes -y p0f
+ 
+		apt-get install libglib2.0-dev libssl-dev libcurl4-openssl-dev libreadline-dev \
+					autoconf build-essential subversion git-core flex bison libsqlite3-dev \
+					 pkg-config libnl-3-dev libnl-genl-3-dev libnl-nf-3-dev libtool \ 
+					 libnl-route-3-dev automake sqlite3 p0f udns-utils libudns-dev \
+					 libpcap-dev libev-dev libemu2 libemu-dev python-libemu
+
+	#	apt-get install -y libglib2.0-dev libssl-dev libcurl4-openssl-dev libreadline-dev \
+	#						autoconf build-essential subversion git-core flex bison libsqlite3-dev \
+	#						pkg-config libnl-3-dev libnl-genl-3-dev libnl-nf-3-dev libtool \
+	#						libnl-route-3-dev liblcfg libemu libev dionaea-python automake \
+	#						dionaea-cython libpcap udns dionaea 
 		cp /opt/dionaea/etc/dionaea/dionaea.conf.dist /opt/dionaea/etc/dionaea/dionaea.conf
 		chown root:root /opt/dionaea/var/dionaea -R ## might be a problem with debian jessie--> chown utility upgraded to get only gid & not its name (root:0|br0k3ngl255:1000)
 		echo "Install finished. Configuration at /opt/dionaea/etc/dionaea/dionaea.conf"
@@ -123,9 +134,9 @@ gpg --keyserver pgpkeys.mit.edu --recv-key 8B48AD6246925553
 gpg -a --export 8B48AD6246925553 | apt-key add -
 echo "deb http://ftp.debian.org/debian wheezy-backports main contrib non-free" | tee -a /etc/apt/sources.list
  apt-get update
- apt-get install -y python python-openssl python-gevent libevent-dev python-dev build-essential make\
-					python-argparse python-chardet python-requests python-sqlalchemy python-lxml\
-					python-numpy-dev python-scipy libatlas-dev g++ git php5 php5-dev liblapack-dev gfortran\
+ apt-get install -y python python-openssl python-gevent libevent-dev python-dev build-essential make \
+					python-argparse python-chardet python-requests python-sqlalchemy python-lxml \
+					python-numpy-dev python-scipy libatlas-dev g++ git php5 php5-dev liblapack-dev gfortran \
 					libxml2-dev libxslt-dev libmysqlclient-dev git-core
 					 
  pip install --upgrade distribute
