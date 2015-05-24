@@ -68,8 +68,10 @@ honey_stop(){
 	}
 
 honey_restart(){
-	
-	
+	echo " Restarting HoneyPi"
+	honey_stop
+		
+	honey_start
 	}
 
 honey_status(){
@@ -80,33 +82,35 @@ honey_status(){
 		sts_kippo=`ps aux|grep kippo >>/dev/null ;echo $?`
 		
 		if [ "$sts_glastopf" == '0' ];then
-			echo " "
+			echo " glastopf is running "
 			exit 1
 		fi
 		if [ "$sts_dionaea" == '0' ];then
-			echo " "
+			echo "dionaea is running "
 			exit 1
 		fi
 		if [ "$sts_ragpicker" == '0' ];then
-			echo " "
+			echo " ragpicker is running"
 			exit 1
 		fi
 		if [ "$sts_honssh" == '0' ];then
-			echo " "
+			echo " honssh is running"
 			exit 1
 		fi
 		if [ "$sts_kippo" == '0' ];then
-			echo " "
+			echo " kippo is running"
 			exit 1
 		fi
-		
+	
 	}
 ###
 #Main- _ - _ - _ - _ - _ - _ -_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
  log_chk
 	case "$1" in
-		start	) honey_start ;;
-		stop	)  honey_stop ;;
+		start	) echo " starting the honeyPI";honey_start  ;;
+		stop	) echo " stopping the honeyPI";honey_stop   ;;
+		status	) honey_status ;;
 		restart	) honey_stop;honey_start;;
-		*		) " Usage: init_honeyPi [start|stop|status]"
+		*	) " Usage: init_honeyPi [start|stop|status]" ;;
+	esac
