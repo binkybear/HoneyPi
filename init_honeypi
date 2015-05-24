@@ -16,7 +16,6 @@ logfile='honeyPi.log'
 logfolder='/var/log/honeyPi'
 logFile='$logfolder/$logfile'
 honeyPATH=''
-export PATH=$PATH:/opt/dionaea/bin
 ###Funcs ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 log_chk(){
 	if [ ! -e $logfolder ];then
@@ -28,18 +27,20 @@ log_chk(){
 	}
 
 honey_start(){
+	export PATH=$PATH:/opt/dionaea/bin
 		apacheSts=`/etc/init.d/apache2 status >> /dev/null ;echo $?`
-	if [ "$apacheSts" == "0" ];then
-	cd /opt/glastopfi && glastopf-runner
-	else
-		echo "apache dependencies - please start apache: systemctl start apache2.service"
-		exit 1
-	fi
+			if [ "$apacheSts" == "0" ];then
+				/opt/glastopfi/glastopf-runner >> $logfolder/glastopf.log
+				dionaea -l all,debug -r /opt/dionaea -w /opt/dionaea -p /opt/dionaea/var/dionaea.pid
+				python /opt/ragpicker/ragpicker.py -t 5 --log-filename=$logfolder/ragpicker.log
+				/opt/honssh/honsshctrl START >> $logfolder/honssh.log
+				/opt/kippo-read-only/start.sh >> $logfolder/kippo.log
+			else
+				echo "apache dependencies - please start apache: systemctl start apache2.service"
+				exit 1
+			fi
 
-	dionaea -l all,debug -r /opt/dionaea -w /opt/dionaea -p /opt/dionaea/var/dionaea.pid
-	python /opt/ragpicker/ragpicker.py -t 5 --log-filename=$logfolder/ragpicker.log
-	/opt/honssh/honsshctrl START
-	cd /opt/kippo-read-only;./start.sh
+	
 	}
 
 honey_stop(){
@@ -83,23 +84,28 @@ honey_status(){
 		
 		if [ "$sts_glastopf" == '0' ];then
 			echo " glastopf is running "
-			exit 1
+		else 
+			echo "glastopf is Down"
 		fi
 		if [ "$sts_dionaea" == '0' ];then
 			echo "dionaea is running "
-			exit 1
+		else 
+			echo ""
 		fi
 		if [ "$sts_ragpicker" == '0' ];then
 			echo " ragpicker is running"
-			exit 1
+		else 
+			echo " ragpicker is Down"
 		fi
 		if [ "$sts_honssh" == '0' ];then
 			echo " honssh is running"
-			exit 1
+		else
+			echo "honssh is Down"
 		fi
 		if [ "$sts_kippo" == '0' ];then
 			echo " kippo is running"
-			exit 1
+		else 
+			echo "kippo is Down"
 		fi
 	
 	}
@@ -112,5 +118,5 @@ honey_status(){
 		stop	) echo " stopping the honeyPI";honey_stop   ;;
 		status	) honey_status ;;
 		restart	) honey_stop;honey_start;;
-		*	) " Usage: init_honeyPi [start|stop|status]" ;;
+		*		) " Usage: init_honeyPi [start|stop|status]" ;;
 	esac
