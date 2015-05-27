@@ -60,11 +60,11 @@ echo "deb http://packages.s7t.de/raspbian wheezy main" | tee -a /etc/apt/sources
 					 libnl-route-3-dev automake sqlite3 p0f udns-utils libudns-dev \
 					 libpcap-dev libev-dev libemu2 libemu-dev python-libemu
 
-	#	apt-get install -y libglib2.0-dev libssl-dev libcurl4-openssl-dev libreadline-dev \
-	#						autoconf build-essential subversion git-core flex bison libsqlite3-dev \
-	#						pkg-config libnl-3-dev libnl-genl-3-dev libnl-nf-3-dev libtool \
-	#						libnl-route-3-dev liblcfg libemu libev dionaea-python automake \
-	#						dionaea-cython libpcap udns dionaea 
+		apt-get install -y libglib2.0-dev libssl-dev libcurl4-openssl-dev libreadline-dev \
+							autoconf build-essential subversion git-core flex bison libsqlite3-dev \
+							pkg-config libnl-3-dev libnl-genl-3-dev libnl-nf-3-dev libtool \
+							libnl-route-3-dev liblcfg libemu libev dionaea-python automake \
+							dionaea-cython libpcap udns dionaea 
 		cp /opt/dionaea/etc/dionaea/dionaea.conf.dist /opt/dionaea/etc/dionaea/dionaea.conf
 		chown root:root /opt/dionaea/var/dionaea -R ## might be a problem with debian jessie--> chown utility upgraded to get only gid & not its name (root:0|br0k3ngl255:1000)
 		echo "Install finished. Configuration at /opt/dionaea/etc/dionaea/dionaea.conf"
@@ -260,6 +260,16 @@ sleep 5
 f_install
 }
 
+f_set_honeyPi_init(){
+	chk_init=`ls |grep init_honeyPi.sh`
+	if [ -e $chk_init ];then
+		cp init_honeyPi.sh /etc/init.d/honeyPi
+			chmod 755  /etc/init.d/honeyPi
+	else
+		echo " something went wrong - Please copy init_honeyPi.sh file to /etc/init.d/, & also notify  the developer"
+	fi
+	}
+
 ###
 #Main
 ###
@@ -279,6 +289,7 @@ clear
 	echo "[5] Install Kojoney (SSH HONEYPOT/Low Intercation)"
 	echo "[6] Install Twisted Honeypots (SSH/FTP/Telnet Password Collection/Low Interaction)"
 	echo "[7] Install Glastopf (Multiple Services/Low Interaction)"
+	echo "[8] Setup init script in services"
 	echo "[0] Exit to Main Menu"
 	echo -n "Enter your menu choice [1-4]: "
 # wait for character input
@@ -291,6 +302,7 @@ clear
 				5) f_install_kojoney ;;
 				6) f_install_twisted_honeypots ;;
 				7) f_install_glastopf ;;
+				8) f_set_honeyPi_init ;;
 				0) exit 0 ;;
 				*) echo "Incorrect choice..." ;
 			esac
