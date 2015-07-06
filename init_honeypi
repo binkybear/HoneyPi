@@ -50,7 +50,7 @@ honey_start(){
 					echo " check apache"
 					exit 1
 				else
-					echo "some error accured  - t"
+					echo "some error accured  - try to debug the log files"
 				fi
 				
 			fi
