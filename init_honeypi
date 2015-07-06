@@ -46,7 +46,11 @@ honey_start(){
 				service apache2 restart 
 				if [ "`echo $?`" == "0" ];then 
 					echo "apache started--> Running the honeyPot"
-
+				elif [ "`echo $?`" != "0" ];then
+					echo " check apache"
+					exit 1
+				else
+					echo "some error accured  - t"
 				fi
 				
 			fi
