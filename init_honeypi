@@ -17,7 +17,7 @@ logfolder='/var/log/honeyPi'
 logFile='$logfolder/$logfile'
 honeyPATH=''
 ###Funcs ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-log_chk(){
+log_chk(){ 
 	if [ ! -e $logfolder ];then
 		mkdir $logfolder -m 775
 			if [ ! -e $logfile ];then
@@ -26,7 +26,7 @@ log_chk(){
 	fi
 	}
 
-honey_start(){
+honey_start(){ 
 	export PATH=$PATH:/opt/dionaea/bin
 		apacheSts=`/etc/init.d/apache2 status >> /dev/null ;echo $?`
 			if [ "$apacheSts" == "0" ];then
@@ -41,8 +41,14 @@ honey_start(){
 					/opt/kippo-read-only/start.sh  >> $logfolder/kippo.log
 				fi
 			else
-				echo "apache dependencies - please start apache: systemctl start apache2.service"
-				exit 1
+				#echo "apache dependencies - please start apache: systemctl start apache2.service"
+				#exit 1
+				service apache2 restart 
+				if [ "`echo $?`" == "0" ];then 
+					echo "apache started--> Running the honeyPot"
+
+				fi
+				
 			fi
 	}
 
